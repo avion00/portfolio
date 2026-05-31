@@ -101,8 +101,6 @@ export function Footer() {
       <div className="bg-grid pointer-events-none absolute inset-0 opacity-[0.35] [mask-image:linear-gradient(to_bottom,transparent,black_40%)]" />
 
       <div className="relative mx-auto max-w-[1600px] px-5 md:px-10">
-       
-
         {/* ── link columns ── */}
         <div className="grid grid-cols-2 gap-10 border-b border-line py-16 md:grid-cols-3">
           <Column title="Navigation">
@@ -132,7 +130,7 @@ export function Footer() {
         <div className="py-10">
           <RevealText
             as="h2"
-            lines={['Abhishek']}
+            lines={["Abhishek"]}
             className="select-none font-display text-[22vw] font-semibold leading-[0.9] tracking-tighter text-fg/90 md:text-[15vw]"
           />
           <div className="-mt-2 flex items-baseline gap-2">
@@ -151,6 +149,8 @@ export function Footer() {
           <span className="text-sm text-muted/70">
             Based in Nepal — serving clients worldwide.
           </span>
+          {time}
+
           <button
             {...hover}
             onClick={() => scrollToTarget(0)}
@@ -164,5 +164,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
