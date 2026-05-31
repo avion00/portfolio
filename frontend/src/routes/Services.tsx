@@ -4,6 +4,7 @@ import { ServicesIntro } from '@/components/services/ServicesIntro'
 import { ServicePanel } from '@/components/services/ServicePanel'
 import { ServicesOutro } from '@/components/services/ServicesOutro'
 import { serviceDetails } from '@/data/serviceDetails'
+import { servicesSchema } from '@/lib/structuredData'
 import { prefersReducedMotion } from '@/lib/utils'
 
 const MAX_DIM = 0.55
@@ -78,6 +79,11 @@ export default function Services() {
         title="Services"
         description="AI automation, multi-agent systems, ERP/CRM, mobile apps, full-stack web and SaaS — Abhishek Kumar Chaudhary combines AI and software engineering into one clear process."
         path="/services"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Services', path: '/services' },
+        ]}
+        schema={servicesSchema()}
       />
 
       {/* Sticky-stacking sections: each panel pins and the next scrolls over it. */}

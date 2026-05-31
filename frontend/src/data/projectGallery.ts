@@ -26,7 +26,23 @@ export interface GalleryImage {
 const sub = (name: string) => `/projects/sub-image/${name}`;
 
 const PUBLIC_GALLERIES: Record<string, string[]> = {
-  "multi-agent-ai-platform": [sub("multi-agent.png")],
+  "d-and-c-constructing": [
+    "/projects/project-10.png",
+    sub("dcaboutlight.png"),
+    sub("dccontact.png"),
+    sub("dcourwork.png"),
+    sub("dcviewimage.png"),
+    sub("dcrecent.png"),
+    sub("dcfooter.png"),
+  ],
+  
+  "multi-agent-ai-platform": [
+    sub("multi-agent.png"),
+    sub("n8n1.png"),
+    sub("n8n2.png"),
+    sub("n8n3.png"),
+    sub("n8n4.png"),
+  ],
 
   "enterprise-erp-system": [
     "/projects/project-02.jpeg",

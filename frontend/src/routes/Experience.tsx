@@ -10,6 +10,10 @@ export default function Experience() {
         title="Experience"
         description="6–7 years of experience — Founder of AutoStacks, Buy2Rent.eu, Atlas Technology and 3.5 years freelancing on Fiverr for international clients."
         path="/experience"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Experience', path: '/experience' },
+        ]}
       />
       <PageHero
         label="Experience — 6+ Years"

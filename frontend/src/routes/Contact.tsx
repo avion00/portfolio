@@ -1,4 +1,5 @@
 import { Seo } from '@/components/Seo'
+import { contactPageSchema } from '@/lib/structuredData'
 import { PageHero } from '@/components/ui/PageHero'
 import { ContactSection } from '@/components/sections/ContactSection'
 
@@ -9,6 +10,11 @@ export default function Contact() {
         title="Contact"
         description="Get in touch with Abhishek Kumar Chaudhary — AI automation, SaaS, mobile and enterprise software. Email amic8848@gmail.com or message on WhatsApp."
         path="/contact"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Contact', path: '/contact' },
+        ]}
+        schema={contactPageSchema()}
       />
       <PageHero
         label="Contact"

@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Header } from '@/components/layout/Header'
-import { Sidebar } from '@/components/layout/Sidebar'
+// import { Sidebar } from '@/components/layout/Sidebar'
 import { MobileMenu } from '@/components/layout/MobileMenu'
 import { Footer } from '@/components/layout/Footer'
 import { CursorFollower } from '@/components/ui/CursorFollower'
@@ -19,6 +19,10 @@ const Skills = lazy(() => import('@/routes/Skills'))
 const Company = lazy(() => import('@/routes/Company'))
 const ProjectDetail = lazy(() => import('@/routes/ProjectDetail'))
 const Gallery = lazy(() => import('@/routes/Gallery'))
+const Privacy = lazy(() => import('@/routes/Privacy'))
+const Terms = lazy(() => import('@/routes/Terms'))
+const Cookies = lazy(() => import('@/routes/Cookies'))
+const Sitemap = lazy(() => import('@/routes/Sitemap'))
 
 /** Full-screen wipe panel that reveals the page on each navigation. */
 function RouteWipe() {
@@ -72,6 +76,10 @@ function AnimatedRoutes() {
           <Route path="/skills" element={<Skills />} />
           <Route path="/company" element={<Company />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/cookies" element={<Cookies />} />
+          <Route path="/sitemap" element={<Sitemap />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </motion.div>
@@ -87,7 +95,7 @@ export default function App() {
       <CursorFollower />
       <RouteWipe />
       <Header />
-      <Sidebar />
+      {/* <Sidebar /> */}
       <MobileMenu />
       <main className="relative">
         <Suspense

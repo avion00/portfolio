@@ -1,4 +1,5 @@
 import { Seo } from '@/components/Seo'
+import { profilePageSchema } from '@/lib/structuredData'
 import { PageHero } from '@/components/ui/PageHero'
 import { AboutSection } from '@/components/sections/AboutSection'
 import { ExperienceSection } from '@/components/sections/ExperienceSection'
@@ -11,6 +12,12 @@ export default function About() {
         title="About"
         description="Abhishek Kumar Chaudhary — Full Stack Developer & AI Automation Engineer with 6–7 years of experience and Founder of AutoStacks."
         path="/about"
+        type="profile"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'About', path: '/about' },
+        ]}
+        schema={profilePageSchema()}
       />
       <PageHero
         label="About Me"

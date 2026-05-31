@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import {
   navItems,
   extraNavItems,
+  legalNavItems,
   SOCIALS,
   // CONTACT_EMAIL,
   // CONTACT_PHONE,
@@ -102,7 +103,7 @@ export function Footer() {
 
       <div className="relative mx-auto max-w-[1600px] px-5 md:px-10">
         {/* ── link columns ── */}
-        <div className="grid grid-cols-2 gap-10 border-b border-line py-16 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-10 border-b border-line py-16 md:grid-cols-4">
           <Column title="Navigation">
             {navItems.map((n) => (
               <li key={n.to}>
@@ -112,6 +113,13 @@ export function Footer() {
           </Column>
           <Column title="Explore">
             {extraNavItems.map((n) => (
+              <li key={n.to}>
+                <FooterLink to={n.to}>{n.label}</FooterLink>
+              </li>
+            ))}
+          </Column>
+          <Column title="Legal">
+            {legalNavItems.map((n) => (
               <li key={n.to}>
                 <FooterLink to={n.to}>{n.label}</FooterLink>
               </li>
@@ -142,25 +150,42 @@ export function Footer() {
         </div>
 
         {/* ── bottom bar ── */}
-        <div className="flex flex-col gap-4 border-t border-line py-8 md:flex-row md:items-center md:justify-between">
-          <span className="font-mono-label text-muted/60">
-            © 2026 Abhishek Chaudhary · {COMPANY_NAME}
-          </span>
-          <span className="text-sm text-muted/70">
-            Based in Nepal — serving clients worldwide.
-          </span>
-          <p className="hidden">{time}</p>
-
-          <button
-            {...hover}
-            onClick={() => scrollToTarget(0)}
-            className="group font-mono-label flex items-center gap-2 text-muted transition-colors hover:text-fg"
-          >
-            Back to top
-            <span className="grid h-7 w-7 place-items-center rounded-full border border-line transition-colors group-hover:border-accent group-hover:text-accent">
-              <ArrowDown size={13} className="rotate-180" />
+        <div className="border-t border-line py-8">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <span className="font-mono-label text-muted/60">
+              © 2026 Abhishek Chaudhary · {COMPANY_NAME}
             </span>
-          </button>
+
+            {/* legal quick links */}
+            <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
+              {legalNavItems.map((n) => (
+                <Link
+                  key={n.to}
+                  to={n.to}
+                  {...hover}
+                  className="text-sm text-muted/70 transition-colors hover:text-fg"
+                >
+                  {n.label}
+                </Link>
+              ))}
+            </nav>
+
+            <button
+              {...hover}
+              onClick={() => scrollToTarget(0)}
+              className="group font-mono-label flex items-center gap-2 text-muted transition-colors hover:text-fg"
+            >
+              Back to top
+              <span className="grid h-7 w-7 place-items-center rounded-full border border-line transition-colors group-hover:border-accent group-hover:text-accent">
+                <ArrowDown size={13} className="rotate-180" />
+              </span>
+            </button>
+          </div>
+
+          <p className="mt-6 text-sm text-muted/70">
+            Based in Nepal — serving clients worldwide.
+          </p>
+          <p className="hidden">{time}</p>
         </div>
       </div>
     </footer>

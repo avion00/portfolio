@@ -6,6 +6,7 @@ import { SectionLabel } from '@/components/ui/SectionLabel'
 import { Play, ArrowDown } from '@/components/ui/icons'
 import { projects } from '@/data/projects'
 import { projectGalleries } from '@/data/projectGallery'
+import { projectSchema } from '@/lib/structuredData'
 import { useAppStore } from '@/store/useAppStore'
 import { prefersReducedMotion } from '@/lib/utils'
 
@@ -143,8 +144,17 @@ export default function ProjectDetail() {
     <>
       <Seo
         title={project.title}
-        description={`${project.title} — ${project.description}`}
+        description={project.description}
         path={`/project/${project.id}`}
+        type="article"
+        image={gallery[0]?.src ?? project.image}
+        keywords={[project.category, project.industry, project.framework]}
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Projects', path: '/works' },
+          { name: project.title, path: `/project/${project.id}` },
+        ]}
+        schema={projectSchema(project, gallery[0]?.src)}
       />
 
       <section ref={sectionRef} className="relative lg:flex">

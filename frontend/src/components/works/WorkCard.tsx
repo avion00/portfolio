@@ -50,7 +50,7 @@ export function WorkCard({ project }: { project: Project }) {
           alt={`${project.title} — ${project.category}`}
           loading="lazy"
           decoding="async"
-          className="block w-full transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+          className="block w-full "
         />
       </div>
     </article>

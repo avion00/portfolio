@@ -4,6 +4,7 @@ import { WorksIntro } from '@/components/works/WorksIntro'
 import { WorkCard } from '@/components/works/WorkCard'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { projects, WORK_FILTERS } from '@/data/projects'
+import { projectsCollectionSchema } from '@/lib/structuredData'
 import { useScrollReveal } from '@/hooks/useGSAPAnimation'
 import { useAppStore } from '@/store/useAppStore'
 import { cn, pad2 } from '@/lib/utils'
@@ -30,6 +31,11 @@ export default function Works() {
         title="Projects"
         description="Selected projects by Abhishek Kumar Chaudhary — AI automation platforms, ERP/CRM, AI chatbots, mobile apps, SaaS products, e-commerce and enterprise dashboards."
         path="/works"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Projects', path: '/works' },
+        ]}
+        schema={projectsCollectionSchema(projects)}
       />
 
       <WorksIntro />

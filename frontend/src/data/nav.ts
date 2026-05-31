@@ -18,6 +18,14 @@ export const extraNavItems: NavItem[] = [
   { label: 'Company', to: '/company' },
 ]
 
+/** Legal + utility pages surfaced in the footer. */
+export const legalNavItems: NavItem[] = [
+  { label: 'Privacy Policy', to: '/privacy' },
+  { label: 'Terms & Conditions', to: '/terms' },
+  { label: 'Cookie Policy', to: '/cookies' },
+  { label: 'Sitemap', to: '/sitemap' },
+]
+
 /* ----------------------------- identity ----------------------------- */
 export const OWNER_NAME = 'Abhishek Kumar Chaudhary'
 export const OWNER_SHORT = 'Abhishek Chaudhary'

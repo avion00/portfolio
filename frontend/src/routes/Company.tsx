@@ -11,6 +11,10 @@ export default function Company() {
         title="AutoStacks"
         description="AutoStacks — a futuristic AI automation and software development company building enterprise AI systems, automation infrastructure, ERP/CRM, SaaS, mobile apps and cloud architectures."
         path="/company"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Company', path: '/company' },
+        ]}
       />
       <PageHero
         label="My Company"

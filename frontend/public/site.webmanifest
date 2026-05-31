@@ -1,0 +1,19 @@
+{
+  "name": "Abhishek Kumar Chaudhary — AI & Full Stack Developer",
+  "short_name": "Abhishek Chaudhary",
+  "description": "Full Stack Developer & AI Automation Engineer. Multi-agent AI systems, ERP/CRM, SaaS, mobile apps and automation infrastructure. Founder of AutoStacks.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#15181e",
+  "theme_color": "#15181e",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

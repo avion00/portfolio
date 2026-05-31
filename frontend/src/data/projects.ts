@@ -46,7 +46,7 @@ export const projects: Project[] = [
       "An orchestration platform where autonomous AI agents plan, delegate and execute business workflows end to end — built on LangChain, RAG and vector databases.",
     image: "/projects/project-01.png",
     link: "https://autostacks.com",
-    tint: ["#1f6bff", "#0b2a6b"],
+    tint: ["#414244", "#2D2E2E"],
   },
   {
     id: "enterprise-erp-system",
@@ -59,7 +59,7 @@ export const projects: Project[] = [
     year: "2024",
     description:
       "A modular ERP covering inventory, finance, HR and operations with role-based access, real-time dashboards and a scalable API backend.",
-    tint: ["#2f8f6b", "#0e2e22"],
+    tint: ["#FDFDFD", "#FDFDFD"],
     image: "/projects/project-02.jpeg",
   },
   {
@@ -74,7 +74,7 @@ export const projects: Project[] = [
     description:
       "A pipeline-driven CRM with lead scoring, automation workflows and analytics — engineered for high-volume international sales teams.",
     image: "/projects/project-03.jpg",
-    tint: ["#6d4bff", "#1d1340"],
+    tint: ["#fff", "#fff"],
   },
   {
     id: "ai-support-chatbot",
@@ -88,7 +88,7 @@ export const projects: Project[] = [
     description:
       "A retrieval-augmented support assistant connected to company knowledge bases, ticketing and multi-channel messaging with human handoff.",
     image: "/projects/project-04.png",
-    tint: ["#1f6bff", "#101826"],
+    tint: ["#060C17", "#060C17"],
   },
   {
     id: "cross-platform-mobile-app",
@@ -102,7 +102,7 @@ export const projects: Project[] = [
     description:
       "A production React Native app for Android & iOS with offline sync, push notifications, payments and a polished, native-feeling UI.",
     image: "/projects/project-05.png",
-    tint: ["#0e7490", "#082f3a"],
+    tint: ["#fff", "#fff"],
   },
   {
     id: "saas-analytics-dashboard",
@@ -117,7 +117,7 @@ export const projects: Project[] = [
       "A multi-tenant SaaS with subscription billing, granular permissions and live analytics — built for scale on a modern cloud stack.",
     image: "/projects/project-06.png",
     link: "https://autostacks.com",
-    tint: ["#7c3aed", "#241047"],
+    tint: ["#FEFEFE", "#FEFEFE"],
   },
   {
     id: "ecommerce-platform",
@@ -131,7 +131,7 @@ export const projects: Project[] = [
     description:
       "A high-conversion storefront with custom checkout, inventory automation and headless CMS — optimised for performance and SEO.",
     image: "/projects/project-07.png",
-    tint: ["#d8643c", "#3a1a0e"],
+    tint: ["#fff", "#fff"],
   },
   {
     id: "autonomous-ai-agent-system",
@@ -145,7 +145,7 @@ export const projects: Project[] = [
     description:
       "Self-directed agents that monitor events, make decisions and trigger actions across tools — the automation core behind AutoStacks products.",
     image: "/projects/project-08.png",
-    tint: ["#1f6bff", "#0b2a6b"],
+    tint: ["#FBFBFC", "#fff"],
   },
   {
     id: "workflow-automation-pipeline",
@@ -159,7 +159,22 @@ export const projects: Project[] = [
     description:
       "A multi-channel automation pipeline wiring CRMs, email, messaging and internal APIs into reliable, observable business workflows.",
     image: "/projects/project-09.png",
-    tint: ["#2f8f6b", "#0e2e22"],
+    tint: ["#FEFEFE", "#FEFEFE"],
+  },
+  {
+    id: "d-and-c-constructing",
+    index: 10,
+    title: "D&C Constructing",
+    category: "Website",
+    industry: "Website",
+    framework: "React",
+    client: "AutoStacks",
+    year: "2026",
+    description:
+      "D&C Contracting is run by Dylan and Connor, two hands-on craftsmen serving homeowners across Western New York. We bring you services that include painting, drywall patching, window replacement, tiling, door replacement, electrical, landscaping, flooring and so much more.",
+    image: "/projects/project-10.png",
+    link: "https://dandccontracting.vercel.app/",
+    tint: ["#090909", "#090909"],
   },
 ];
 

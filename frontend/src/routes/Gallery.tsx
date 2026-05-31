@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Seo } from '@/components/Seo'
 import { PageHero } from '@/components/ui/PageHero'
@@ -7,51 +7,60 @@ import { useScrollReveal } from '@/hooks/useGSAPAnimation'
 import { useAppStore } from '@/store/useAppStore'
 import { getLenis } from '@/hooks/useLenis'
 import { Close, Play, ArrowRight } from '@/components/ui/icons'
-import {
-  gallery,
-  galleryPoster,
-  hasPlayableVideo,
-  type GalleryItem,
-} from '@/data/gallery'
+import { galleryGroups, isVideo, type GalleryItem } from '@/data/gallery'
 import { cn, pad2 } from '@/lib/utils'
 
-const FILTERS = ['All', 'Photos', 'Videos'] as const
-const SKELETONS = [320, 220, 280, 360, 200, 300, 240, 340, 260]
+/** Filters: "All" plus one chip per category. */
+const FILTERS = ['All', ...galleryGroups.map((g) => g.category)] as const
+
+/** What the lightbox is currently showing — a list and an index into it. */
+type Lightbox = { items: GalleryItem[]; index: number } | null
 
 export default function Gallery() {
-  const ref = useScrollReveal<HTMLDivElement>({ selector: '[data-reveal]', stagger: 0.05 })
-  const setCursorVariant = useAppStore((s) => s.setCursorVariant)
+  const ref = useScrollReveal<HTMLDivElement>({
+    selector: '[data-reveal]',
+    stagger: 0.05,
+  })
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>('All')
   const [loaded, setLoaded] = useState(false)
-  const [active, setActive] = useState<number | null>(null)
+  const [box, setBox] = useState<Lightbox>(null)
 
   useEffect(() => {
     const t = window.setTimeout(() => setLoaded(true), 900)
     return () => window.clearTimeout(t)
   }, [])
 
-  const filtered = gallery.filter((g) =>
-    filter === 'All' ? true : filter === 'Videos' ? g.type === 'video' : g.type === 'image',
+  const groups = useMemo(
+    () =>
+      filter === 'All'
+        ? galleryGroups
+        : galleryGroups.filter((g) => g.category === filter),
+    [filter],
   )
 
-  const close = () => setActive(null)
-  const next = () =>
-    setActive((a) => (a === null ? a : (a + 1) % filtered.length))
-  const prev = () =>
-    setActive((a) =>
-      a === null ? a : (a - 1 + filtered.length) % filtered.length,
+  const total = useMemo(
+    () => groups.reduce((n, g) => n + g.items.length, 0),
+    [groups],
+  )
+
+  const close = () => setBox(null)
+  const step = (dir: 1 | -1) =>
+    setBox((b) =>
+      b === null
+        ? b
+        : { ...b, index: (b.index + dir + b.items.length) % b.items.length },
     )
 
   // lightbox: lock scroll + keyboard nav
   useEffect(() => {
-    if (active === null) return
+    if (box === null) return
     const lenis = getLenis()
     lenis?.stop()
     document.body.style.overflow = 'hidden'
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close()
-      else if (e.key === 'ArrowRight') next()
-      else if (e.key === 'ArrowLeft') prev()
+      else if (e.key === 'ArrowRight') step(1)
+      else if (e.key === 'ArrowLeft') step(-1)
     }
     window.addEventListener('keydown', onKey)
     return () => {
@@ -60,22 +69,26 @@ export default function Gallery() {
       document.body.style.overflow = ''
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, filtered.length])
+  }, [box === null])
 
-  const item = active !== null ? filtered[active] : null
+  const current = box ? box.items[box.index] : null
 
   return (
     <>
       <Seo
         title="Gallery"
-        description="A visual gallery of moments, work and behind-the-scenes — photos and videos by Abhishek Kumar Chaudhary."
+        description="A visual gallery of moments — cricket, travel, friends and solo shots by Abhishek Kumar Chaudhary."
         path="/gallery"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Gallery', path: '/gallery' },
+        ]}
       />
 
       <PageHero
         label="Gallery"
-        lines={['Moments, work', 'and behind the scenes.']}
-        intro="A visual archive — events, talks, builds and the small moments in between. Tap any item to view it full-screen."
+        lines={['Moments, off', 'the clock.']}
+        intro="A visual archive grouped by chapter — cricket, travel, friends and the quiet solo moments. Tap any item to view it full-screen."
       />
 
       <section ref={ref} className="py-16 md:py-24">
@@ -86,55 +99,58 @@ export default function Gallery() {
             className="mb-12 flex flex-wrap items-center justify-between gap-4 border-b border-line pb-8"
           >
             <div className="flex flex-wrap gap-2.5">
-              {FILTERS.map((f) => {
-                const activeF = filter === f
-                return (
-                  <button
-                    key={f}
-                    onClick={() => {
-                      setFilter(f)
-                      setActive(null)
-                    }}
-                    onPointerEnter={() => setCursorVariant('hover')}
-                    onPointerLeave={() => setCursorVariant('default')}
-                    className={cn(
-                      'font-mono-label rounded-full border px-4 py-2.5 transition-colors duration-300',
-                      activeF
-                        ? 'border-accent bg-accent text-white'
-                        : 'border-line text-muted hover:border-line-strong hover:text-fg',
-                    )}
-                  >
-                    {f}
-                  </button>
-                )
-              })}
-            </div>
-            <span className="font-mono-label text-muted/60">
-              {pad2(filtered.length)} Items
-            </span>
-          </div>
-
-          {/* masonry */}
-          {loaded ? (
-            <div className="gap-4 [column-fill:_balance] sm:columns-2 lg:columns-3">
-              {filtered.map((g, i) => (
-                <GalleryTile
-                  key={g.id}
-                  item={g}
-                  onOpen={() => setActive(i)}
+              {FILTERS.map((f) => (
+                <FilterChip
+                  key={f}
+                  label={f}
+                  active={filter === f}
+                  onClick={() => {
+                    setFilter(f)
+                    setBox(null)
+                  }}
                 />
               ))}
             </div>
-          ) : (
-            <div className="gap-4 [column-fill:_balance] sm:columns-2 lg:columns-3">
-              {SKELETONS.map((h, i) => (
-                <div
-                  key={i}
-                  className="mb-4 break-inside-avoid"
-                  style={{ height: h }}
+            <span className="font-mono-label text-muted/60">
+              {pad2(total)} Items
+            </span>
+          </div>
+
+          {/* category cards */}
+          {loaded ? (
+            <div className="space-y-8 md:space-y-12">
+              {groups.map((group) => (
+                <article
+                  key={group.category}
+                  data-reveal
+                  className="overflow-hidden rounded-[8px] border border-line bg-surface"
                 >
-                  <Skeleton className="h-full w-full rounded-none" />
-                </div>
+                  <header className="flex items-center justify-between border-b border-line px-5 py-5 md:px-7">
+                    <h2 className="font-display text-2xl font-medium tracking-tight text-fg md:text-3xl">
+                      {group.category}
+                    </h2>
+                    <span className="font-mono-label text-muted/60">
+                      {pad2(group.items.length)}{' '}
+                      {group.items.length === 1 ? 'Item' : 'Items'}
+                    </span>
+                  </header>
+
+                  <div className="gap-3 p-3 [column-fill:_balance] sm:columns-2 md:gap-4 md:p-5 lg:columns-3">
+                    {group.items.map((item, i) => (
+                      <GalleryTile
+                        key={item.id}
+                        item={item}
+                        onOpen={() => setBox({ items: group.items, index: i })}
+                      />
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {[0, 1].map((i) => (
+                <Skeleton key={i} className="h-80 w-full rounded-[8px]" />
               ))}
             </div>
           )}
@@ -143,7 +159,7 @@ export default function Gallery() {
 
       {/* ── lightbox ── */}
       <AnimatePresence>
-        {item && (
+        {current && box && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -155,7 +171,8 @@ export default function Gallery() {
             {/* top bar */}
             <div className="absolute inset-x-0 top-0 flex items-center justify-between px-5 py-5 md:px-10">
               <span className="font-mono-label text-muted">
-                {pad2((active ?? 0) + 1)} / {pad2(filtered.length)} — {item.title}
+                {current.category} · {pad2(box.index + 1)} /{' '}
+                {pad2(box.items.length)} — {current.title}
               </span>
               <button
                 onClick={close}
@@ -167,22 +184,21 @@ export default function Gallery() {
             </div>
 
             {/* prev / next */}
-            <NavBtn side="left" onClick={prev} />
-            <NavBtn side="right" onClick={next} />
+            <NavBtn side="left" onClick={() => step(-1)} />
+            <NavBtn side="right" onClick={() => step(1)} />
 
             {/* media */}
             <motion.div
-              key={item.id}
+              key={current.id}
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
               className="relative max-h-[82vh] w-auto max-w-[90vw] overflow-hidden rounded-[6px] border border-line bg-surface"
             >
-              {hasPlayableVideo(item) ? (
+              {isVideo(current) ? (
                 <video
-                  src={item.src}
-                  poster={item.poster}
+                  src={current.src}
                   controls
                   autoPlay
                   loop
@@ -191,8 +207,8 @@ export default function Gallery() {
                 />
               ) : (
                 <img
-                  src={galleryPoster(item)}
-                  alt={item.title}
+                  src={current.src}
+                  alt={current.title}
                   className="block max-h-[82vh] w-auto"
                 />
               )}
@@ -204,7 +220,36 @@ export default function Gallery() {
   )
 }
 
-/* ------------------------------ tile ----------------------------------- */
+/* ------------------------------ filter chip ----------------------------- */
+
+function FilterChip({
+  label,
+  active,
+  onClick,
+}: {
+  label: string
+  active: boolean
+  onClick: () => void
+}) {
+  const setCursorVariant = useAppStore((s) => s.setCursorVariant)
+  return (
+    <button
+      onClick={onClick}
+      onPointerEnter={() => setCursorVariant('hover')}
+      onPointerLeave={() => setCursorVariant('default')}
+      className={cn(
+        'font-mono-label rounded-full border px-4 py-2.5 transition-colors duration-300',
+        active
+          ? 'border-accent bg-accent text-white'
+          : 'border-line text-muted hover:border-line-strong hover:text-fg',
+      )}
+    >
+      {label}
+    </button>
+  )
+}
+
+/* ------------------------------ tile ------------------------------------ */
 
 function GalleryTile({
   item,
@@ -220,21 +265,36 @@ function GalleryTile({
       onClick={onOpen}
       onPointerEnter={() => setCursorVariant('view')}
       onPointerLeave={() => setCursorVariant('default')}
-      className="group relative mb-4 block w-full break-inside-avoid overflow-hidden border border-line bg-surface"
+      className="group relative mb-3 block w-full break-inside-avoid overflow-hidden rounded-[4px] border border-line bg-ink-2 md:mb-4"
     >
-      <div style={{ aspectRatio: `${item.w} / ${item.h}` }} className="overflow-hidden">
+      {isVideo(item) ? (
+        <video
+          // React sets `muted` as an attribute but not the DOM property, which
+          // some browsers require before they'll allow muted autoplay — force it.
+          ref={(el) => {
+            if (el) el.muted = true
+          }}
+          src={item.src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="block w-full transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+        />
+      ) : (
         <img
-          src={galleryPoster(item)}
+          src={item.src}
           alt={item.title}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+          className="block w-full transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
         />
-      </div>
+      )}
 
       {/* type badge */}
-      <span className="font-mono-label absolute left-4 top-4 flex items-center gap-1.5 rounded-full border border-white/15 bg-ink/40 px-3 py-1.5 text-white/90 backdrop-blur-sm">
-        {item.type === 'video' ? (
+      <span className="font-mono-label absolute left-3 top-3 flex items-center gap-1.5 rounded-full border border-white/15 bg-ink/40 px-3 py-1.5 text-white/90 backdrop-blur-sm">
+        {isVideo(item) ? (
           <>
             <Play size={11} /> Video
           </>
@@ -244,8 +304,8 @@ function GalleryTile({
       </span>
 
       {/* hover caption */}
-      <div className="pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-ink/80 via-ink/10 to-transparent p-5 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-        <span className="font-display text-lg font-medium text-white">
+      <div className="pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-ink/80 via-ink/10 to-transparent p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <span className="font-display text-base font-medium text-white">
           {item.title}
         </span>
       </div>
