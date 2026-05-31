@@ -149,7 +149,7 @@ export function Footer() {
           <span className="text-sm text-muted/70">
             Based in Nepal — serving clients worldwide.
           </span>
-          {time}
+          <p className="hidden">{time}</p>
 
           <button
             {...hover}
