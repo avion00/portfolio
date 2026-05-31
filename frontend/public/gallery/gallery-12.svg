@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1240" viewBox="0 0 1000 1240" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8643c"/><stop offset="1" stop-color="#2a120a"/></linearGradient>
+    <radialGradient id="r" cx="0.3" cy="0.25" r="0.9"><stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1000" height="1240" fill="#0f1218"/>
+  <rect width="1000" height="1240" fill="url(#g)"/>
+  <rect width="1000" height="1240" fill="url(#r)"/>
+  <circle cx="500" cy="570.4" r="160" fill="#ffffff" fill-opacity="0.08"/>
+  <circle cx="500" cy="570.4" r="160" stroke="#ffffff" stroke-opacity="0.25" stroke-width="2"/>
+  <text x="500" y="582.8" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="26" letter-spacing="4" fill="#ffffff" fill-opacity="0.85">12</text>
+  <text x="64" y="1168" font-family="Space Grotesk, Arial, sans-serif" font-size="46" font-weight="600" fill="#ffffff" fill-opacity="0.95">Demo Day</text>
+  <text x="64" y="1204" font-family="JetBrains Mono, monospace" font-size="20" letter-spacing="3" fill="#ffffff" fill-opacity="0.5">ABHISHEK — GALLERY</text>
+</svg>

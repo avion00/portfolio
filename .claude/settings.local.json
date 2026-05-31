@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($dir = \"e:\\\\portfolio\\\\frontend\\\\src\\\\assets\\\\projects\\\\enterprise-erp-system\"; New-Item -ItemType Directory -Force -Path $dir | Out-Null; Copy-Item \"e:\\\\portfolio\\\\frontend\\\\public\\\\projects\\\\project-02.jpeg\" -Destination \"$dir\\\\01-overview.jpeg\" -Force; Get-ChildItem $dir | Select-Object Name)",
+      "PowerShell(cd e:\\\\portfolio\\\\frontend; npx tsc -b 2>&1 | Select-Object -First 40; \"EXITCODE: $LASTEXITCODE\")"
+    ]
+  }
+}

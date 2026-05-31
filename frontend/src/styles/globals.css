@@ -1,0 +1,262 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------ */
+/*  Runtime theme tokens (toggled via the `light` class on <html>)     */
+/* ------------------------------------------------------------------ */
+:root {
+  --bg: #15181e;
+  --bg-2: #12151a;
+  --surface: #191d24;
+  --surface-2: #1d222b;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --fg: #f2f2f2;
+  --muted: #9ca3af;
+  --accent: #1f6bff;
+  --accent-soft: rgba(31, 107, 255, 0.16);
+
+  color-scheme: dark;
+}
+
+:root.light {
+  --bg: #eef0f3;
+  --bg-2: #e7eaee;
+  --surface: #ffffff;
+  --surface-2: #f4f5f7;
+  --line: rgba(15, 18, 24, 0.1);
+  --line-strong: rgba(15, 18, 24, 0.2);
+  --fg: #15181e;
+  --muted: #5b6470;
+  --accent: #1f6bff;
+  --accent-soft: rgba(31, 107, 255, 0.12);
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Map runtime tokens to Tailwind utilities (bg-ink, text-fg, ...)     */
+/* ------------------------------------------------------------------ */
+@theme inline {
+  --color-ink: var(--bg);
+  --color-ink-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --breakpoint-xs: 30rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                                */
+/* ------------------------------------------------------------------ */
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: auto; /* Lenis owns scrolling */
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv01';
+    /* `clip` (not `hidden`) prevents horizontal scroll WITHOUT turning body
+       into a scroll container, which would break `position: sticky`. */
+    overflow-x: clip;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* When Lenis is active, prevent native smooth fighting */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  /* Hide scrollbar but keep scrollability */
+  body::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+
+  button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Utilities                                                           */
+/* ------------------------------------------------------------------ */
+@layer utilities {
+  .font-mono-label {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.6875rem;
+  }
+
+  /* Faint grid backdrop */
+  .bg-grid {
+    background-image: linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  /* Dark glass card */
+  .glass {
+    background: color-mix(in oklab, var(--surface) 78%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  /* Huge ghost outline text behind project titles */
+  .text-ghost {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--line-strong);
+    user-select: none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Spotlight follow target for service cards */
+  .spotlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(
+      320px circle at var(--mx, 50%) var(--my, 50%),
+      var(--accent-soft),
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+  .spotlight:hover::before {
+    opacity: 1;
+  }
+
+  /* Shimmering loading skeleton */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--fg) 9%, transparent),
+      transparent
+    );
+    animation: shimmer 1.5s infinite;
+  }
+
+  .mask-fade-y {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Keyframes                                                           */
+/* ------------------------------------------------------------------ */
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(280%);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reduced motion                                                      */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

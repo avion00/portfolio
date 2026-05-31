@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(wsl -e bash -lc \"cd /mnt/f/media1/c/Desktop/pethemes && npm run build 2>&1 | grep -E 'built in|error|Error|Cannot find|transformed' | head\")",
+      "PowerShell(wsl -e bash -lc \"cd /mnt/f/media1/c/Desktop/pethemes && npx tsc -b --pretty false 2>&1 | head -30 && echo TSC_DONE_EXIT=\\\\${PIPESTATUS[0]}\")",
+      "PowerShell(wsl -e bash -lc 'cd /mnt/f/media1/c/Desktop/pethemes && npm run build 2>&1 | grep -E \"built in|error|Error|Cannot|transformed\" | head -20 && echo DONE')"
+    ]
+  }
+}
