@@ -4,13 +4,13 @@ import {
   navItems,
   extraNavItems,
   SOCIALS,
-  CONTACT_EMAIL,
-  CONTACT_PHONE,
+  // CONTACT_EMAIL,
+  // CONTACT_PHONE,
   COMPANY_NAME,
 } from '@/data/nav'
-import { SectionLabel } from '@/components/ui/SectionLabel'
+// import { SectionLabel } from '@/components/ui/SectionLabel'
 import { RevealText } from '@/components/ui/RevealText'
-import { MagneticButton } from '@/components/ui/MagneticButton'
+// import { MagneticButton } from '@/components/ui/MagneticButton'
 import { ArrowUpRight, ArrowDown } from '@/components/ui/icons'
 import { useScrollReveal } from '@/hooks/useGSAPAnimation'
 import { useAppStore } from '@/store/useAppStore'
